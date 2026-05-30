@@ -41,6 +41,9 @@ from datetime import datetime
 import collections
 import concurrent.futures
 
+from tools.tool import Tool
+
+
 # readline is not available on Windows
 try:
     import readline
@@ -2180,28 +2183,6 @@ class ToolResult:
         self.output = output
         self.is_error = is_error
 
-
-class Tool(ABC):
-    """Base class for all tools."""
-    name = ""
-    description = ""
-    parameters = {}  # JSON Schema
-
-    @abstractmethod
-    def execute(self, params):
-        """Execute the tool. Returns string output."""
-        ...
-
-    def get_schema(self):
-        """Return OpenAI function calling schema."""
-        return {
-            "type": "function",
-            "function": {
-                "name": self.name,
-                "description": self.description,
-                "parameters": self.parameters,
-            },
-        }
 
 
 class BashTool(Tool):
